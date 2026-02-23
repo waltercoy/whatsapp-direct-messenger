@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp Quick Sender</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #25D366, #128C7E);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        width: 350px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background-color: #25D366;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background-color: #1da851;
+    }
+
+    .error {
+        color: red;
+        font-size: 13px;
+        text-align: center;
+        margin-top: 5px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h2>WhatsApp Direct Message</h2>
+
+    <input type="text" id="phone" placeholder="Enter phone number (e.g. 0123456789)">
+    <textarea id="message" rows="3" placeholder="Type your message..."></textarea>
+
+    <button onclick="sendWhatsApp()">Send Message</button>
+
+    <div class="error" id="errorMsg"></div>
+</div>
+
+<script>
+function sendWhatsApp() {
+    let number = document.getElementById("phone").value.trim();
+    let message = document.getElementById("message").value.trim();
+    let error = document.getElementById("errorMsg");
+
+    error.innerText = "";
+
+    // Remove non-digits
+    number = number.replace(/\D/g, '');
+
+    if (number.length < 9) {
+        error.innerText = "Invalid phone number!";
+        return;
+    }
+
+    if (number.startsWith("0")) {
+        number = number.substring(1);
+    }
+
+    let finalNumber = "60" + number; // Malaysia code
+
+    let encodedMessage = encodeURIComponent(message);
+
+    let url = `https://wa.me/${finalNumber}?text=${encodedMessage}`;
+
+    window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>
